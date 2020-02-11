@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'kakeibo.apps.KakeiboConfig',
+    'polls.apps.PollsConfig',
 ]
 
 MIDDLEWARE = [

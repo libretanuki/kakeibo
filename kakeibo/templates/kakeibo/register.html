@@ -1,0 +1,10 @@
+{% extends 'kakeibo/base.html' %}
+
+{% block content %}
+    <h2>家計簿入力</h2>
+    <form action="{% url 'kakeibo:register'%}" method="post">
+    {% csrf_token %}
+        
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+{% endblock %}
