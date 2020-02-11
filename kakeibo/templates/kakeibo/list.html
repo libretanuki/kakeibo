@@ -1,0 +1,14 @@
+{% extends 'kakeibo/base.html' %}
+
+{% block content %}
+    <div class="kakeibo">
+        <h1>ようこそ！</h1>
+        <p><a href="{% url 'kakeibo:register' %}">家計簿入力</a></p>
+    </div>
+    <hr>
+    {% for kakeibo in kakeibos %}
+        <div class="kakeibo">
+            <h1><a href="{% url 'kakeibo:detail' pk=kakeibo.pk %}">{{ kakeibo.year }}年 {{ kakeibo.month }}月</a></h1>
+        </div>
+    {% endfor %}
+{% endblock %}
