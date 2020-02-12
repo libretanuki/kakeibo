@@ -7,8 +7,7 @@
 4.パッケージをインストールする
  pip install -r requirements.txt
 5.データベースの準備
- python manage.py makemigrations kakeibo
- python manage.py migrate kakeibo
+ python manage.py migrate
  python manage.py createsuperuser
 
 　※データベースはsqliteかpostgresを使う
