@@ -5,6 +5,9 @@ class Kakeibo(models.Model):
 	year = models.CharField(max_length=4)
 	month = models.CharField(max_length=2)
 
+	class  Meta:
+		unique_together = ('year', 'month')
+
 	def __str__(self):
 		return self.year + self.month.zfill(2)
 
