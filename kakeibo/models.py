@@ -7,6 +7,7 @@ class Kakeibo(models.Model):
 
 	class  Meta:
 		unique_together = ('year', 'month')
+		db_table = 'kakeibo'
 
 	def __str__(self):
 		return self.year + self.month.zfill(2)
@@ -18,6 +19,9 @@ class Expense(models.Model):
 	money = models.IntegerField(u'金額')
 	name = models.CharField(u'支払人', max_length=50)
 	input_date = models.DateTimeField(u'登録日時', default=timezone.now)
+
+	class Meta:
+		db_table = 'expense'
 
 	def __str__(self):
 		return self.yoto
