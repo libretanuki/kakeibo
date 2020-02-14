@@ -5,6 +5,6 @@ app_name = 'kakeibo'
 
 urlpatterns = [
     path('', views.list, name='list'),
-    path('register/', views.register, name='register'),
     path('<int:pk>/', views.detail, name='detail'),
+    path('register/', views.KakeiboCreateView.as_view(), name='register'),
 ]

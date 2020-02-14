@@ -2,9 +2,42 @@
 
 {% block content %}
     <h2>家計簿入力</h2>
-    <form action="{% url 'kakeibo:register'%}" method="post">
-    {% csrf_token %}
-        
-        <button type="submit" class="save btn btn-default">Save</button>
-    </form>
+    <!-- <form action="{% url 'kakeibo:register'%}" method="post"> -->
+	<form action="." method="post">
+	{% csrf_token %}
+
+	<p>登録年月</p>
+	<table>
+	  {{ form.as_table }}
+	</table>
+
+	{% for formset in inlines %}
+	  <p>費用{{forloop.counter}}</p>
+	  <table class="table table-sm ">
+	    {{ formset.management_form }}
+	    {% for form in formset %}
+	      <!-- ヘッダ出力 -->
+	      {% ifequal forloop.counter0 0 %}
+	        {% for field in form %}
+	        <td class="bg-light">
+	          {% if field.field.widget.is_hidden %}
+	          {% else %}
+	            {{ field.label_tag }}
+	          {% endif %}
+	        </td>
+	        {% endfor %}
+	      {% endifequal %}
+	      <tr>
+	        {% for field in form %}
+	        <td>
+	          {{ field }}
+	        </td>
+	        {% endfor %}
+	      </tr>
+	    {% endfor %}
+	  </table>
+
+	{% endfor %}
+
+	<input class="btn btn-primary" type="submit" value="登録" />
 {% endblock %}
