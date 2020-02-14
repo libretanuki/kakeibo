@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'kakeibo.apps.KakeiboConfig',
     'polls.apps.PollsConfig',
+    'extraviews_test.apps.ExtraviewsTestConfig',
 ]
 
 MIDDLEWARE = [
