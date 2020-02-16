@@ -27,17 +27,8 @@ class KakeiboCreate(CreateView):
 
 	def form_invalid(self, form):
 		''' バリデーションに失敗した時 '''
-		message.warning(self.request, "保存できませんでした")
+		messages.warning(self.request, "保存できませんでした")
 		return super().form_invalid(form)
-	
-
-	# def get(self, request, *args, **kwargs):
-	# 	form = self.form_class()
-	# 	return render(request, self.template_name, {'form': form})
-
-	# def post(self, request, *args, **kwargs):
-	# 	form = self.form_class(request.POST)
-	# 	if form.is_valid():
 
 # 家計簿更新
 class KakeiboUpdate(UpdateView):
@@ -53,24 +44,13 @@ class KakeiboUpdate(UpdateView):
 
 	def form_invalid(self, form):
 		''' バリデーションに失敗した時 '''
-		message.warning(self.request, "保存できませんでした")
+		messages.warning(self.request, "保存できませんでした")
 		return super().form_invalid(form)
 
 # 家計簿削除
 class KakeiboDelete(DeleteView):
 	model = Kakeibo
-	form_class = KakeiboForm
-	template_name = 'kakeibo/kakeibo_confirm_delete.html'
+	template_name = 'kakeibo/kakeibo_confirm_delete.html' #デフォルトでこの値
 	success_url = '/kakeibo'
-
-	def form_valid(self, form):
-		''' バリデーションを通った時 '''
-		messages.success(self.request, "削除しました")
-		return super().form_valid(form)
-
-	def form_invalid(self, form):
-		''' バリデーションに失敗した時 '''
-		message.warning(self.request, "削除できませんでした")
-		return super().form_invalid(form)
 
 

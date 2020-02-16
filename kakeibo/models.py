@@ -33,7 +33,7 @@ class Kakeibo(models.Model):
 	category = models.ForeignKey(Category, on_delete=models.PROTECT,
 								verbose_name='カテゴリ', default=get_or_create_default_category)
 	money = models.IntegerField(verbose_name='金額', help_text='単位は円')
-	memo = models.CharField(verbose_name='メモ', max_length=500, default=' ')
+	memo = models.CharField(verbose_name='メモ', max_length=500, blank=True, null=True)
 	payer = models.ForeignKey(Payer, on_delete=models.PROTECT, verbose_name='支払者')
 	seisan = models.BooleanField(verbose_name='清算', default=False)
 
