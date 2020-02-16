@@ -31,7 +31,7 @@
                 <td nowrap>{{ kakeibo.date }}</td>
                 <td nowrap>{{ kakeibo.category }}</td>
                 <td align="right" nowrap>¥ {{ kakeibo.money|intcomma }}</td>
-                <td nowrap>{{ kakeibo.memo }}</td>
+                <td nowrap>{{ kakeibo.memo|default_if_none:"" }}</td>
                 <td nowrap>{{ kakeibo.payer }}</td>
                 <td nowrap>{{ kakeibo.seisan }}</td>
                 <td align="center" nowrap>
