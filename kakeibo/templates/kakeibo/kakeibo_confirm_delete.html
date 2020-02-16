@@ -12,15 +12,21 @@
             <th>金額</th>
             <th>メモ</th>
             <th>支払者</th>
-            <th>清算/未清算</th>
+            <th>清算</th>
         </tr>
         <tr>
-            <td nowrap>{{ kakeibo.date }}</td>
-            <td nowrap>{{ kakeibo.category }}</td>
-            <td align="right" nowrap>¥ {{ kakeibo.money|intcomma }}</td>
-            <td nowrap>{{ kakeibo.memo }}</td>
-            <td nowrap>{{ kakeibo.payer }}</td>
-            <td nowrap>{{ kakeibo.seisan }}</td>
+            <td>{{ kakeibo.date }}</td>
+            <td>{{ kakeibo.category }}</td>
+            <td align="right">¥ {{ kakeibo.money|intcomma }}</td>
+            <td>{{ kakeibo.memo }}</td>
+            <td>{{ kakeibo.payer }}</td>
+            <td>
+                {% if kakeibo.seisan %}
+                    済
+                {% else %}
+                    未
+                {% endif %}
+            </td>
         </tr>
     </table>
 
