@@ -1,16 +1,10 @@
 from django.contrib import admin
 
-from .models import Kakeibo, Expense
-
-class ExpenseInline(admin.TabularInline):
-	model = Expense
-	extra = 3
+from .models import Kakeibo, Category, Payer
 
 class KakeiboAdmin(admin.ModelAdmin):
-	inlines = [ExpenseInline]
-	list_display = ('year', 'month')
-	search_fields = ['year']
-	
+	list_display = ('date', 'category', 'money', 'memo', 'payer', 'seisan')
 
 admin.site.register(Kakeibo, KakeiboAdmin)
-admin.site.register(Expense)
+admin.site.register(Category)
+admin.site.register(Payer)

@@ -1,8 +1,8 @@
 from django import forms
-from .models import Kakeibo, Expense
+from .models import Kakeibo
 
 class KakeiboForm(forms.ModelForm):
 
     class Meta:
         model = Kakeibo
-        fields = ('year', 'month',)
+        fields = ('date','category', 'money', 'memo', 'payer', 'seisan')

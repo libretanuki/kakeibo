@@ -1,0 +1,32 @@
+{% extends 'kakeibo/base.html' %}
+{% load humanize %}
+
+{% block content %}
+    <h2>削除確認</h2>
+    <br>
+    <p>以下の内容を削除しますか？</p>
+    <table class="table table-sm ">
+        <tr>
+            <th>日付</th>
+            <th>カテゴリ</th>
+            <th>金額</th>
+            <th>メモ</th>
+            <th>支払者</th>
+            <th>清算/未清算</th>
+        </tr>
+        <tr>
+            <td nowrap>{{ kakeibo.date }}</td>
+            <td nowrap>{{ kakeibo.category }}</td>
+            <td align="right" nowrap>¥ {{ kakeibo.money|intcomma }}</td>
+            <td nowrap>{{ kakeibo.memo }}</td>
+            <td nowrap>{{ kakeibo.payer }}</td>
+            <td nowrap>{{ kakeibo.seisan }}</td>
+        </tr>
+    </table>
+
+    <form method="POST" class="post-form">
+    	{% csrf_token %}
+        <button type="submit" class="save btn btn-default">削除</button>
+    </form>
+
+{% endblock %}

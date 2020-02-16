@@ -1,47 +1,76 @@
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import TemplateView
-from django.urls import reverse_lazy
-from extra_views import InlineFormSetFactory, CreateWithInlinesView, UpdateWithInlinesView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.contrib import messages
 
-from .models import Kakeibo, Expense
+from .models import Kakeibo
 from .forms import KakeiboForm
 
-class Expense1Inline(InlineFormSetFactory):
-    model = Expense
-    fields = '__all__'
+# 家計簿一覧表示
+class KakeiboList(ListView):
+	model = Kakeibo
+	template_name = 'kakeibo/kakeibo_list.html' #デフォルトでappname/modelname_list.htmlになる
+	context_object_name = 'kakeibo_list'
+	#paginate_by = 10
 
-class Expense2Inline(InlineFormSetFactory):
-    model = Expense
-    fields = '__all__'
+	def get_queryset(self):
+		return Kakeibo.objects.order_by('date')
 
-class Expense3Inline(InlineFormSetFactory):
-    model = Expense
-    fields = '__all__'
+# 家計簿追加
+class KakeiboCreate(CreateView):
+	form_class = KakeiboForm
+	template_name = 'kakeibo/kakeibo_edit.html'
+	success_url = '/kakeibo'
 
-class KakeiboCreateView(CreateWithInlinesView):
-    model = Kakeibo
-    fields = ['year', 'month']
-    context_object_name = 'kakeibo'
-    inlines = [Expense1Inline, Expense2Inline, Expense3Inline]
-    template_name = 'kakeibo/register.html'
-    #success_url = reverse_lazy('extraviews_test:success')
+	def form_valid(self, form):
+		''' バリデーションを通った時 '''
+		messages.success(self.request, "保存しました")
+		return super().form_valid(form)
 
-'''
-class ParentUpdateView(UpdateWithInlinesView):
-    model = Parent
-    form_class = ParentForm
-    inlines = [Child1Inline, Child2Inline, Child3Inline]
-    template_name = 'extraviews_test/parent.html'
-    success_url = reverse_lazy('extraviews_test:success')
-'''
+	def form_invalid(self, form):
+		''' バリデーションに失敗した時 '''
+		message.warning(self.request, "保存できませんでした")
+		return super().form_invalid(form)
+	
 
-def list(request):
-    kakeibos = Kakeibo.objects.order_by('year','month')
-    return render(request, 'kakeibo/list.html', {'kakeibos': kakeibos})
+	# def get(self, request, *args, **kwargs):
+	# 	form = self.form_class()
+	# 	return render(request, self.template_name, {'form': form})
 
-def detail(request, pk):
-    expenses = Expense.objects.filter(kakeibo_id=pk).order_by('input_date')
-    return render(request, 'kakeibo/detail.html', {'expenses': expenses})
+	# def post(self, request, *args, **kwargs):
+	# 	form = self.form_class(request.POST)
+	# 	if form.is_valid():
 
-def register(request):
-    return render(request, 'kakeibo/register.html')
+# 家計簿更新
+class KakeiboUpdate(UpdateView):
+	model = Kakeibo
+	form_class = KakeiboForm
+	template_name = 'kakeibo/kakeibo_edit.html'
+	success_url = '/kakeibo'
+
+	def form_valid(self, form):
+		''' バリデーションを通った時 '''
+		messages.success(self.request, "保存しました")
+		return super().form_valid(form)
+
+	def form_invalid(self, form):
+		''' バリデーションに失敗した時 '''
+		message.warning(self.request, "保存できませんでした")
+		return super().form_invalid(form)
+
+# 家計簿削除
+class KakeiboDelete(DeleteView):
+	model = Kakeibo
+	form_class = KakeiboForm
+	template_name = 'kakeibo/kakeibo_confirm_delete.html'
+	success_url = '/kakeibo'
+
+	def form_valid(self, form):
+		''' バリデーションを通った時 '''
+		messages.success(self.request, "削除しました")
+		return super().form_valid(form)
+
+	def form_invalid(self, form):
+		''' バリデーションに失敗した時 '''
+		message.warning(self.request, "削除できませんでした")
+		return super().form_invalid(form)
+
+

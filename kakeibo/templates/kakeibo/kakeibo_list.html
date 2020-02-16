@@ -1,0 +1,47 @@
+{% extends 'kakeibo/base.html' %}
+{% load humanize %}
+
+{% block content %}
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2><a href="{% url 'kakeibo:kakeibo_create' %}">家計簿入力</a></h2>
+
+    <table class="table table-sm ">
+        <tr>
+            <th>No.</th>
+            <th>日付</th>
+            <th>カテゴリ</th>
+            <th>金額</th>
+            <th>メモ</th>
+            <th>支払者</th>
+            <th>清算/未清算</th>
+            <th>編集</th>
+            <th>削除</th>
+        </tr>
+        {% for kakeibo in kakeibo_list %}
+            <tr>
+                <td align="center" nowrap>{{ forloop.counter }}</td>
+                <td nowrap>{{ kakeibo.date }}</td>
+                <td nowrap>{{ kakeibo.category }}</td>
+                <td align="right" nowrap>¥ {{ kakeibo.money|intcomma }}</td>
+                <td nowrap>{{ kakeibo.memo }}</td>
+                <td nowrap>{{ kakeibo.payer }}</td>
+                <td nowrap>{{ kakeibo.seisan }}</td>
+                <td align="center" nowrap>
+                    <a href="{% url 'kakeibo:kakeibo_update' pk=kakeibo.pk %}">編集</a>
+                </td>
+                <td align="center" nowrap>
+                    <a href="{% url 'kakeibo:kakeibo_delete' pk=kakeibo.pk %}">削除</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

@@ -4,7 +4,8 @@ from . import views
 app_name = 'kakeibo'
 
 urlpatterns = [
-    path('', views.list, name='list'),
-    path('<int:pk>/', views.detail, name='detail'),
-    path('register/', views.KakeiboCreateView.as_view(), name='register'),
+    path('', views.KakeiboList.as_view(), name='kakeibo_list'),
+    path('create/', views.KakeiboCreate.as_view(), name='kakeibo_create'),
+    path('update/<int:pk>/', views.KakeiboUpdate.as_view(), name='kakeibo_update'),
+    path('delete/<int:pk>/', views.KakeiboDelete.as_view(), name='kakeibo_delete'),
 ]

@@ -1,0 +1,14 @@
+{% extends 'kakeibo/base.html' %}
+
+{% block content %}
+    <h2>家計簿入力</h2>
+    <form method="POST" class="post-form">
+    	{% csrf_token %}
+        
+        <table class="table table-sm ">
+        	{{ form.as_table }}
+        </table>
+
+        <button type="submit" class="save btn btn-default">保存</button>
+    </form>
+{% endblock %}
