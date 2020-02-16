@@ -18,7 +18,7 @@ class Category(models.Model):
 		return self.category_name
 
 class Payer(models.Model):
-	payer = models.CharField(verbose_name='支払者', max_length=50, unique=True)
+	payer_name = models.CharField(verbose_name='支払者', max_length=50, unique=True)
 
 	class Meta:
 		db_table = 'payer'
@@ -26,7 +26,7 @@ class Payer(models.Model):
 		verbose_name_plural = '支払者'
 
 	def __str__(self):
-		return self.payer
+		return self.payer_name
 
 class Kakeibo(models.Model):
 	date = models.DateField(verbose_name='日付', default=timezone.now)
@@ -41,6 +41,3 @@ class Kakeibo(models.Model):
 		db_table = 'kakeibo'
 		verbose_name = '家計簿'
 		verbose_name_plural = '家計簿'
-
-	def __str__(self):
-		return self.memo
