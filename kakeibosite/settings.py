@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'kakeibo.apps.KakeiboConfig',
     'polls.apps.PollsConfig',
-    'extraviews_test.apps.ExtraviewsTestConfig',
 ]
 
 MIDDLEWARE = [
