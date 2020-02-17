@@ -7,62 +7,62 @@ from .forms import KakeiboForm
 
 # 家計簿一覧表示
 class KakeiboList(ListView):
-	model = Kakeibo
-	template_name = 'kakeibo/kakeibo_list.html' #デフォルトでappname/modelname_list.htmlになる
-	context_object_name = 'kakeibo_list'
-	#paginate_by = 10
+    model = Kakeibo
+    template_name = 'kakeibo/kakeibo_list.html' #デフォルトでappname/modelname_list.htmlになる
+    context_object_name = 'kakeibo_list'
+    #paginate_by = 10
 
-	def get_queryset(self):
-		return Kakeibo.objects.order_by('date')
+    def get_queryset(self):
+        return Kakeibo.objects.order_by('date')
 
 # 家計簿追加
 class KakeiboCreate(CreateView):
-	form_class = KakeiboForm
-	template_name = 'kakeibo/kakeibo_edit.html'
-	success_url = '/kakeibo'
+    form_class = KakeiboForm
+    template_name = 'kakeibo/kakeibo_edit.html'
+    success_url = '/kakeibo'
 
-	def form_valid(self, form):
-		''' バリデーションを通った時 '''
-		messages.success(self.request, "保存しました")
-		return super().form_valid(form)
+    def form_valid(self, form):
+        ''' バリデーションを通った時 '''
+        messages.success(self.request, "保存しました")
+        return super().form_valid(form)
 
-	def form_invalid(self, form):
-		''' バリデーションに失敗した時 '''
-		messages.warning(self.request, "保存できませんでした")
-		return super().form_invalid(form)
+    def form_invalid(self, form):
+        ''' バリデーションに失敗した時 '''
+        messages.warning(self.request, "保存できませんでした")
+        return super().form_invalid(form)
 
 # 家計簿更新
 class KakeiboUpdate(UpdateView):
-	model = Kakeibo
-	form_class = KakeiboForm
-	template_name = 'kakeibo/kakeibo_edit.html'
-	success_url = '/kakeibo'
+    model = Kakeibo
+    form_class = KakeiboForm
+    template_name = 'kakeibo/kakeibo_edit.html'
+    success_url = '/kakeibo'
 
-	def form_valid(self, form):
-		''' バリデーションを通った時 '''
-		messages.success(self.request, "保存しました")
-		return super().form_valid(form)
+    def form_valid(self, form):
+        ''' バリデーションを通った時 '''
+        messages.success(self.request, "保存しました")
+        return super().form_valid(form)
 
-	def form_invalid(self, form):
-		''' バリデーションに失敗した時 '''
-		messages.warning(self.request, "保存できませんでした")
-		return super().form_invalid(form)
+    def form_invalid(self, form):
+        ''' バリデーションに失敗した時 '''
+        messages.warning(self.request, "保存できませんでした")
+        return super().form_invalid(form)
 
 # 家計簿削除
 class KakeiboDelete(DeleteView):
-	model = Kakeibo
-	template_name = 'kakeibo/kakeibo_confirm_delete.html' #デフォルトでこの値
-	success_url = '/kakeibo'
+    model = Kakeibo
+    template_name = 'kakeibo/kakeibo_confirm_delete.html' #デフォルトでこの値
+    success_url = '/kakeibo'
 
 
 # 家計簿清算表示
 class KakeiboSeisan(ListView):
-	model = Kakeibo
-	template_name = 'kakeibo/kakeibo_seisan.html'
-	context_object_name = 'kakeibo_seisan'
+    model = Kakeibo
+    template_name = 'kakeibo/kakeibo_seisan.html'
+    context_object_name = 'kakeibo_seisan'
 
-	def get_queryset(self):
-		return Kakeibo.objects.select_related('payer') \
-					.values('payer__payer_name', 'seisan') \
-					.annotate(pay_sum=Sum('money'), seisan_kngk=Sum('money')/2) \
-					.order_by('payer__payer_name')
+    def get_queryset(self):
+        return Kakeibo.objects.select_related('payer') \
+                    .values('payer__payer_name', 'seisan') \
+                    .annotate(pay_sum=Sum('money'), seisan_kngk=Sum('money')/2) \
+                    .order_by('payer__payer_name')
