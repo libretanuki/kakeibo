@@ -1,5 +1,6 @@
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
+from django.db.models import Sum
 
 from .models import Kakeibo
 from .forms import KakeiboForm
@@ -54,3 +55,14 @@ class KakeiboDelete(DeleteView):
 	success_url = '/kakeibo'
 
 
+# 家計簿清算表示
+class KakeiboSeisan(ListView):
+	model = Kakeibo
+	template_name = 'kakeibo/kakeibo_seisan.html'
+	context_object_name = 'kakeibo_seisan'
+
+	def get_queryset(self):
+		return Kakeibo.objects.select_related('payer') \
+					.values('payer__payer_name', 'seisan') \
+					.annotate(pay_sum=Sum('money'), seisan_kngk=Sum('money')/2) \
+					.order_by('payer__payer_name')

@@ -1,0 +1,32 @@
+{% extends 'kakeibo/base.html' %}
+{% load humanize %}
+
+{% block content %}
+    <h2>清算額の確認</h2>
+    <br>
+    <p>今月の清算額です</p>
+    <table class="table table-sm ">
+        <tr>
+            <th>No.</th>
+            <th>支払者</th>
+            <th>支払額合計</th>
+            <th>清算額（支払額合計/2）</th>
+            <th>清算</th>
+        </tr>
+        {% for kakeibo in kakeibo_seisan %}
+            <tr>
+                <td align="right">{{ forloop.counter }}</td>
+                <td>{{ kakeibo.payer__payer_name }}</td>
+                <td align="right">¥ {{ kakeibo.pay_sum|intcomma }}</td>
+                <td align="right">¥ {{ kakeibo.seisan_kngk|intcomma }}</td>
+                <td>
+                    {% if kakeibo.seisan %}
+                        済
+                    {% else %}
+                        未
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

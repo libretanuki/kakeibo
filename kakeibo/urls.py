@@ -8,4 +8,5 @@ urlpatterns = [
     path('create/', views.KakeiboCreate.as_view(), name='kakeibo_create'),
     path('update/<int:pk>/', views.KakeiboUpdate.as_view(), name='kakeibo_update'),
     path('delete/<int:pk>/', views.KakeiboDelete.as_view(), name='kakeibo_delete'),
+    path('seisan/', views.KakeiboSeisan.as_view(), name='kakeibo_seisan'),
 ]
