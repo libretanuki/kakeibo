@@ -2,15 +2,14 @@
 {% load humanize %}
 
 {% block content %}
-    <h2>清算額の確認</h2>
+    <h2>今月の清算額</h2>
     <br>
-    <p>今月の清算額です</p>
-    <table class="table table-sm ">
+    <table class="table table-striped">
         <tr>
             <th>No.</th>
             <th>支払者</th>
             <th>支払額合計</th>
-            <th>清算額（支払額合計/2）</th>
+            <th>清算額（支払額合計÷2）</th>
             <th>清算</th>
         </tr>
         {% for kakeibo in kakeibo_seisan %}
