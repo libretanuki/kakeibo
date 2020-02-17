@@ -65,4 +65,4 @@ class KakeiboSeisan(ListView):
         return Kakeibo.objects.select_related('payer') \
                     .values('payer__payer_name', 'seisan') \
                     .annotate(pay_sum=Sum('money'), seisan_kngk=Sum('money')/2) \
-                    .order_by('payer__payer_name')
+                    .order_by('seisan')

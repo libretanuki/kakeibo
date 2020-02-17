@@ -4,13 +4,14 @@
 {% block content %}
     <h2>今月の清算額</h2>
     <br>
-    <table class="table table-striped">
+    <table class="table table-striped" id="seisan_table">
         <tr>
             <th>No.</th>
             <th>支払者</th>
             <th>支払額合計</th>
-            <th>清算額（支払額合計÷2）</th>
+            <th>清算額</th>
             <th>清算</th>
+            <th>お支払い</th>
         </tr>
         {% for kakeibo in kakeibo_seisan %}
             <tr>
@@ -18,7 +19,7 @@
                 <td>{{ kakeibo.payer__payer_name }}</td>
                 <td align="right">¥ {{ kakeibo.pay_sum|intcomma }}</td>
                 <td align="right">¥ {{ kakeibo.seisan_kngk|intcomma }}</td>
-                <td>
+                <td align="center">
                     {% if kakeibo.seisan %}
                         済
                     {% else %}
@@ -28,4 +29,26 @@
             </tr>
         {% endfor %}
     </table>
+
+    <script type="text/javascript">
+        var table = document.getElementById('seisan_table');
+
+        var seisan1 = 0;
+        var seisan2 = 0;
+
+        if (table.rows[1].cells[4].firstChild.nodeValue == '未') {
+            seisan1 = table.rows[0].cells[3]
+        } else {
+            seisan1 = 1
+        }
+
+        if (table.rows[2].cells[4] === '未') {
+            seisan2 = table.rows[1].cells[3]
+        }
+
+        for(var i=1; i<3; i++){
+            var newtd = table.rows[i].insertCell(-1);
+            newtd.appendChild( document.createTextNode(seisan1) );
+        }
+    </script>
 {% endblock %}
