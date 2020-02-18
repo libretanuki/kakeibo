@@ -2,43 +2,47 @@
 {% load humanize %}
 
 {% block content %}
-    <h2>今月の清算額</h2>
-    <br>
-    <table class="table table-striped" id="seisan_table">
-        <tr>
-            <th>No.</th>
-            <th>支払者</th>
-            <th>支払額合計</th>
-            <th>清算額</th>
-            <th>清算</th>
-            <th>お支払い</th>
-        </tr>
-        {% for kakeibo in kakeibo_seisan %}
-            <tr>
-                <td align="right">{{ forloop.counter }}</td>
-                <td>{{ kakeibo.payer__payer_name }}</td>
-                <td align="right">{{ kakeibo.pay_sum|intcomma }}</td>
-                <td align="right">{{ kakeibo.seisan_kngk|intcomma }}</td>
-                <td id="seisan_flg" align="center">{% if kakeibo.seisan %}済{% else %}未{% endif %}</td>
-            </tr>
-        {% endfor %}
-    </table>
+    <div class="row">
+        <div class="col-xs-6 col-md-7">
 
-    <script type="text/javascript">
-        var table = document.getElementById('seisan_table');
-        var seisan = [0,0,0,0];
+            <h2>今月の清算額</h2>
+            <table class="table table-striped" id="seisan_table">
+                <tr>
+                    <th>No.</th>
+                    <th>支払者</th>
+                    <th>支払額合計</th>
+                    <th>清算額</th>
+                    <th>清算</th>
+                    <th>お支払い</th>
+                </tr>
+                {% for kakeibo in kakeibo_seisan %}
+                    <tr>
+                        <td align="right">{{ forloop.counter }}</td>
+                        <td>{{ kakeibo.payer__payer_name }}</td>
+                        <td align="right">{{ kakeibo.pay_sum|intcomma }}</td>
+                        <td align="right">{{ kakeibo.seisan_kngk|intcomma }}</td>
+                        <td id="seisan_flg" align="center">{% if kakeibo.seisan %}済{% else %}未{% endif %}</td>
+                    </tr>
+                {% endfor %}
+            </table>
 
-        for (var i = 1; i < table.rows.length; i++) {
-            seisan[i-1] = parseInt(table.rows[i].cells[3].firstChild.nodeValue.replace(',',''));
-        }
+            <script type="text/javascript">
+                var table = document.getElementById('seisan_table');
+                var seisan = [0,0,0,0];
 
-        for (var i = 1; i < table.rows.length; i=i+2) {
-            var td1 = table.rows[i].insertCell(-1);
-            var td2 = table.rows[i+1].insertCell(-1);
-            
-            td1.appendChild(document.createTextNode(seisan[i-1]-seisan[i]));
-            td2.appendChild(document.createTextNode(seisan[i]-seisan[i-1]));
-        }
+                for (var i = 1; i < table.rows.length; i++) {
+                    seisan[i-1] = parseInt(table.rows[i].cells[3].firstChild.nodeValue.replace(',',''));
+                }
 
-    </script>
+                for (var i = 1; i < table.rows.length; i=i+2) {
+                    var td1 = table.rows[i].insertCell(-1);
+                    var td2 = table.rows[i+1].insertCell(-1);
+                    
+                    td1.appendChild(document.createTextNode(seisan[i-1]-seisan[i]));
+                    td2.appendChild(document.createTextNode(seisan[i]-seisan[i-1]));
+                }
+            </script>
+
+        </div>
+    </div>
 {% endblock %}

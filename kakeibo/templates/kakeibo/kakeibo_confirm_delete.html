@@ -1,38 +1,35 @@
 {% extends 'kakeibo/base.html' %}
 {% load humanize %}
 
-{% block content %}
-    <h2>削除確認</h2>
-    <br>
-    <p>以下の内容を削除しますか？</p>
-    <table class="table">
-        <tr>
-            <th>日付</th>
-            <th>カテゴリ</th>
-            <th>金額</th>
-            <th>メモ</th>
-            <th>支払者</th>
-            <th>清算</th>
-        </tr>
-        <tr>
-            <td>{{ kakeibo.date }}</td>
-            <td>{{ kakeibo.category }}</td>
-            <td align="right">¥ {{ kakeibo.money|intcomma }}</td>
-            <td>{{ kakeibo.memo }}</td>
-            <td>{{ kakeibo.payer }}</td>
-            <td>
-                {% if kakeibo.seisan %}
-                    済
-                {% else %}
-                    未
-                {% endif %}
-            </td>
-        </tr>
-    </table>
+{% block content %}       
+    <div class="row">
+        <div class="col-xs-6 col-md-8">
 
-    <form method="POST" class="post-form">
-    	{% csrf_token %}
-        <button type="submit" class="save btn btn-default">削除</button>
-    </form>
+            <h2>以下の内容を削除しますか？</h2>
+            <table class="table">
+                <tr>
+                    <th>日付</th>
+                    <th>カテゴリ</th>
+                    <th>金額</th>
+                    <th>メモ</th>
+                    <th>支払者</th>
+                    <th>清算</th>
+                </tr>
+                <tr>
+                    <td>{{ kakeibo.date }}</td>
+                    <td>{{ kakeibo.category }}</td>
+                    <td align="right">{{ kakeibo.money|intcomma }}</td>
+                    <td>{{ kakeibo.memo|default_if_none:"" }}</td>
+                    <td>{{ kakeibo.payer }}</td>
+                    <td align="center">{% if kakeibo.seisan %}済{% else %}未{% endif %}</td>
+                </tr>
+            </table>
 
+            <form method="POST" class="post-form">
+            	{% csrf_token %}
+                <button type="submit" class="save btn btn-default">削除</button>
+            </form>
+
+        </div>
+    </div>
 {% endblock %}
