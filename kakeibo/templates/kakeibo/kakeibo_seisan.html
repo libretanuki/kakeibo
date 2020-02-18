@@ -17,38 +17,28 @@
             <tr>
                 <td align="right">{{ forloop.counter }}</td>
                 <td>{{ kakeibo.payer__payer_name }}</td>
-                <td align="right">¥ {{ kakeibo.pay_sum|intcomma }}</td>
-                <td align="right">¥ {{ kakeibo.seisan_kngk|intcomma }}</td>
-                <td align="center">
-                    {% if kakeibo.seisan %}
-                        済
-                    {% else %}
-                        未
-                    {% endif %}
-                </td>
+                <td align="right">{{ kakeibo.pay_sum|intcomma }}</td>
+                <td align="right">{{ kakeibo.seisan_kngk|intcomma }}</td>
+                <td id="seisan_flg" align="center">{% if kakeibo.seisan %}済{% else %}未{% endif %}</td>
             </tr>
         {% endfor %}
     </table>
 
     <script type="text/javascript">
         var table = document.getElementById('seisan_table');
+        var seisan = [0,0,0,0];
 
-        var seisan1 = 0;
-        var seisan2 = 0;
-
-        if (table.rows[1].cells[4].firstChild.nodeValue == '未') {
-            seisan1 = table.rows[0].cells[3]
-        } else {
-            seisan1 = 1
+        for (var i = 1; i < table.rows.length; i++) {
+            seisan[i-1] = parseInt(table.rows[i].cells[3].firstChild.nodeValue.replace(',',''));
         }
 
-        if (table.rows[2].cells[4] === '未') {
-            seisan2 = table.rows[1].cells[3]
+        for (var i = 1; i < table.rows.length; i=i+2) {
+            var td1 = table.rows[i].insertCell(-1);
+            var td2 = table.rows[i+1].insertCell(-1);
+            
+            td1.appendChild(document.createTextNode(seisan[i-1]-seisan[i]));
+            td2.appendChild(document.createTextNode(seisan[i]-seisan[i-1]));
         }
 
-        for(var i=1; i<3; i++){
-            var newtd = table.rows[i].insertCell(-1);
-            newtd.appendChild( document.createTextNode(seisan1) );
-        }
     </script>
 {% endblock %}

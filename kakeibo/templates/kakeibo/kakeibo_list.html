@@ -38,13 +38,7 @@
                 <td align="right">¥ {{ kakeibo.money|intcomma }}</td>
                 <td>{{ kakeibo.memo|default_if_none:"" }}</td>
                 <td>{{ kakeibo.payer }}</td>
-                <td align="center">
-                    {% if kakeibo.seisan %}
-                        済
-                    {% else %}
-                        未
-                    {% endif %}
-                </td>
+                <td align="center">{% if kakeibo.seisan %}済{% else %}未{% endif %}</td>
                 <td align="center">
                     <a href="{% url 'kakeibo:kakeibo_update' pk=kakeibo.pk %}">編集</a>
                 </td>
