@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-xs-6 col-md-7">
+        <div class="col-md-7">
 
             <h2>今月の清算額</h2>
             <table class="table table-striped" id="seisan_table">
@@ -38,8 +38,19 @@
                     var td1 = table.rows[i].insertCell(-1);
                     var td2 = table.rows[i+1].insertCell(-1);
                     
-                    td1.appendChild(document.createTextNode(seisan[i-1]-seisan[i]));
-                    td2.appendChild(document.createTextNode(seisan[i]-seisan[i-1]));
+                    var seisan1 = seisan[i-1]-seisan[i]
+                    var seisan2 = seisan[i]-seisan[i-1]
+
+                    if (seisan1 > 0) {
+                        seisan1 = 0;
+                        seisan2 = Math.abs(seisan2)
+                    } else {
+                        seisan1 = Math.abs(seisan1)
+                        seisan2 = 0
+                    }
+
+                    td1.appendChild(document.createTextNode("¥ " + seisan1.toLocaleString()));
+                    td2.appendChild(document.createTextNode("¥ " + seisan2.toLocaleString()));
                 }
             </script>
 
