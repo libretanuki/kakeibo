@@ -36,6 +36,7 @@ class Kakeibo(models.Model):
     memo = models.CharField(verbose_name='メモ', max_length=500, blank=True, null=True)
     payer = models.ForeignKey(Payer, on_delete=models.PROTECT, verbose_name='支払者')
     seisan = models.BooleanField(verbose_name='清算', default=False)
+    seisan_ymd = models.DateField(verbose_name='清算日', blank=True, null=True)
 
     class  Meta:
         db_table = 'kakeibo'

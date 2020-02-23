@@ -5,4 +5,4 @@ class KakeiboForm(forms.ModelForm):
 
     class Meta:
         model = Kakeibo
-        fields = ('date','category', 'money', 'memo', 'payer', 'seisan')
+        fields = ('date','category', 'money', 'memo', 'payer', 'seisan', 'seisan_ymd')
