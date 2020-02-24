@@ -1,6 +1,8 @@
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from django.db.models import Sum
+from django.utils import timezone
+from django.shortcuts import render
 
 from .models import Kakeibo
 from .forms import KakeiboForm
@@ -60,9 +62,15 @@ class KakeiboSeisan(ListView):
     model = Kakeibo
     template_name = 'kakeibo/kakeibo_seisan.html'
     context_object_name = 'kakeibo_seisan'
+    success_url = '/kakeibo/seisan'
 
     def get_queryset(self):
         return Kakeibo.objects.select_related('payer') \
                     .values('payer__payer_name', 'seisan') \
                     .annotate(pay_sum=Sum('money'), seisan_kngk=Sum('money')/2) \
                     .order_by('seisan')
+
+# 家計簿一括清算
+def batch_seisan(request):
+    result = Kakeibo.objects.filter(seisan='f').update(seisan='t', seisan_ymd=timezone.now())
+    return render(request, 'kakeibo/kakeibo_batch_seisan.html', {})
