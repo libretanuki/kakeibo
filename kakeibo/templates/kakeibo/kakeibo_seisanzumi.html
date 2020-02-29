@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-7">
 
-            <h2>未清算額</h2>
+            <h2>過去分</h2>
             <table class="table table-striped" id="seisan_table">
                 <tr>
                     <th>No.</th>
@@ -15,7 +15,7 @@
                     <th>清算</th>
                     <th>お支払い</th>
                 </tr>
-                {% for kakeibo in kakeibo_seisan %}
+                {% for kakeibo in kakeibo_seisanzumi %}
                     <tr>
                         <td align="right">{{ forloop.counter }}</td>
                         <td>{{ kakeibo.payer__payer_name }}</td>
@@ -25,11 +25,6 @@
                     </tr>
                 {% endfor %}
             </table>
-
-            <form action="{% url 'kakeibo:batch_seisan' %}" method="POST" class="post-form">
-                {% csrf_token %}
-                <button type="submit" class="save btn btn-default">一括清算</button>
-            </form>
 
             <script type="text/javascript">
                 var table = document.getElementById('seisan_table');

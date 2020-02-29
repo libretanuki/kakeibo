@@ -57,18 +57,29 @@ class KakeiboDelete(DeleteView):
     success_url = '/kakeibo'
 
 
-# 家計簿清算表示
+# 家計簿未清算表示
 class KakeiboSeisan(ListView):
     model = Kakeibo
     template_name = 'kakeibo/kakeibo_seisan.html'
     context_object_name = 'kakeibo_seisan'
-    success_url = '/kakeibo/seisan'
 
     def get_queryset(self):
-        return Kakeibo.objects.select_related('payer') \
+        return Kakeibo.objects.filter(seisan='f').select_related('payer') \
                     .values('payer__payer_name', 'seisan') \
                     .annotate(pay_sum=Sum('money'), seisan_kngk=Sum('money')/2) \
-                    .order_by('seisan')
+                    .order_by('payer__payer_name')
+
+# 家計簿清算済み表示
+class KakeiboSeisanzumi(ListView):
+    model = Kakeibo
+    template_name = 'kakeibo/kakeibo_seisanzumi.html'
+    context_object_name = 'kakeibo_seisanzumi'
+
+    def get_queryset(self):
+        return Kakeibo.objects.filter(seisan='t').select_related('payer') \
+                    .values('payer__payer_name', 'seisan') \
+                    .annotate(pay_sum=Sum('money'), seisan_kngk=Sum('money')/2) \
+                    .order_by('payer__payer_name')
 
 # 家計簿一括清算
 def batch_seisan(request):
