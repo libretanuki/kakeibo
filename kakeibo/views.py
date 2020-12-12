@@ -7,6 +7,9 @@ from django.shortcuts import render
 from .models import Kakeibo
 from .forms import KakeiboForm
 
+import datetime
+from dateutil.relativedelta import relativedelta
+
 # 家計簿一覧表示
 class KakeiboList(ListView):
     model = Kakeibo
@@ -15,7 +18,9 @@ class KakeiboList(ListView):
     #paginate_by = 10
 
     def get_queryset(self):
-        return Kakeibo.objects.order_by('date')
+        before_2_month = datetime.date.today() - relativedelta(months=2)
+        before_2_month = datetime.date(before_2_month.year, before_2_month.month, 1)
+        return Kakeibo.objects.filter(date__gte=before_2_month).order_by('-date')
 
 # 家計簿追加
 class KakeiboCreate(CreateView):
