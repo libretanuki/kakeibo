@@ -28,7 +28,7 @@
 
             <form action="{% url 'kakeibo:batch_seisan' %}" method="POST" class="post-form">
                 {% csrf_token %}
-                <button type="submit" class="save btn btn-default">一括清算</button>
+                <button type="button" class="save btn btn-default" onclick="submit();">一括清算</button>
             </form>
 
             <script type="text/javascript">
