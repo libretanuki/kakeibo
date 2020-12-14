@@ -11,4 +11,6 @@ urlpatterns = [
     path('seisan/', views.KakeiboSeisan.as_view(), name='kakeibo_seisan'),
     path('seisanzumi/', views.KakeiboSeisanzumi.as_view(), name='kakeibo_seisanzumi'),
     path('seisan/batch_seisan', views.batch_seisan, name='batch_seisan'),
+    path('grapf/', views.kakeibo_graph, name='kakeibo_graph'),
+    path('grapf/plot/', views.get_svg, name='plot'),
 ]

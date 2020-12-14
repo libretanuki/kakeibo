@@ -10,6 +10,14 @@ from .forms import KakeiboForm
 import datetime
 from dateutil.relativedelta import relativedelta
 
+import matplotlib
+#バックエンドを指定
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import io
+from django.http import HttpResponse
+
+
 # 家計簿一覧表示
 class KakeiboList(ListView):
     model = Kakeibo
@@ -90,3 +98,33 @@ class KakeiboSeisanzumi(ListView):
 def batch_seisan(request):
     result = Kakeibo.objects.filter(seisan='f').update(seisan='t', seisan_ymd=timezone.now())
     return render(request, 'kakeibo/kakeibo_batch_seisan.html', {})
+
+# 家計簿グラフ
+def kakeibo_graph(request):
+    return render(request, 'kakeibo/kakeibo_graph.html', {})
+
+
+#グラフ作成
+def setPlt():
+    x = ["07/01", "07/02", "07/03", "07/04", "07/05", "07/06", "07/07"]
+    y = [3, 5, 0, 5, 6, 10, 2]
+    plt.bar(x, y, color='#00d5ff')
+    plt.title(r"$\bf{Running Trend  -2020/07/07}$", color='#3407ba')
+    plt.xlabel("Date")
+    plt.ylabel("km")
+
+# SVG化
+def plt2svg():
+    buf = io.BytesIO()
+    plt.savefig(buf, format='svg', bbox_inches='tight')
+    s = buf.getvalue()
+    buf.close()
+    return s
+
+# 実行するビュー関数
+def get_svg(request):
+    setPlt()  
+    svg = plt2svg()  #SVG化
+    plt.cla()  # グラフをリセット
+    response = HttpResponse(svg, content_type='image/svg+xml')
+    return response
