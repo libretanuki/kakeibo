@@ -1,6 +1,7 @@
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from django.db.models import Sum
+from django.db import connection
 from django.utils import timezone
 from django.shortcuts import render
 
@@ -69,7 +70,6 @@ class KakeiboDelete(DeleteView):
     template_name = 'kakeibo/kakeibo_confirm_delete.html' #デフォルトでこの値
     success_url = '/kakeibo'
 
-
 # 家計簿未清算表示
 class KakeiboSeisan(ListView):
     model = Kakeibo
@@ -99,6 +99,7 @@ def batch_seisan(request):
     result = Kakeibo.objects.filter(seisan='f').update(seisan='t', seisan_ymd=timezone.now())
     return render(request, 'kakeibo/kakeibo_batch_seisan.html', {})
 
+
 # 家計簿グラフ
 def kakeibo_graph(request):
     return render(request, 'kakeibo/kakeibo_graph.html', {})
@@ -106,12 +107,32 @@ def kakeibo_graph(request):
 
 #グラフ作成
 def setPlt():
-    x = ["07/01", "07/02", "07/03", "07/04", "07/05", "07/06", "07/07"]
-    y = [3, 5, 0, 5, 6, 10, 2]
+    sql = """
+            select
+                substr(to_char(date, 'YYYYMMDD'), 1, 6) as month,
+                sum(money) as pay
+            from
+                kakeibo
+            where
+                substr(to_char(date, 'YYYYMMDD'), 1, 4) = '%s'
+            group by
+                substr(to_char(date, 'YYYYMMDD'), 1, 6)
+            order by 1;
+          """
+    
+    this_year = datetime.date.today().year
+
+    cursor = connection.cursor()
+    cursor.execute(sql, [this_year])
+    result = cursor.fetchall()
+
+    x = [kakeibo[0][4:] for kakeibo in result]
+    y = [kakeibo[1] for kakeibo in result]
+
     plt.bar(x, y, color='#00d5ff')
-    plt.title(r"$\bf{Running Trend  -2020/07/07}$", color='#3407ba')
-    plt.xlabel("Date")
-    plt.ylabel("km")
+    plt.title(this_year, color='#3407ba')
+    plt.xlabel("month")
+    plt.ylabel("pay")
 
 # SVG化
 def plt2svg():
@@ -121,7 +142,7 @@ def plt2svg():
     buf.close()
     return s
 
-# 実行するビュー関数
+# 家計簿グラフ作成
 def get_svg(request):
     setPlt()  
     svg = plt2svg()  #SVG化
