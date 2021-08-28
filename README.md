@@ -18,6 +18,8 @@
   > python manage.py createsuperuser
 
 6.ローカルで起動する
+  【windows】
+  > .\[newenvname]\Scripts\activate
   > python manage.py runserver
 
 
